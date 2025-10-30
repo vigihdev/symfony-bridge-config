@@ -1,0 +1,6 @@
+# file/folder yang tidak perlu ikut saat distribusi
+/.github export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/config export-ignore
+/phpunit.xml.dist export-ignore
