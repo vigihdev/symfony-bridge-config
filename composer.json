@@ -46,6 +46,7 @@
         "process-timeout": 0
     },
     "scripts": {
+        "test": "phpunit",
         "server": "php -S localhost:2272 server.php"
     }
 }
