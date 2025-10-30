@@ -24,7 +24,7 @@ final class ConfigBridge implements ConfigBridgeContract
     {
 
         if (!is_dir($basePath) || !is_dir(Path::join($basePath, $configDir))) {
-            throw new InvalidArgumentException("Directory {$basePath}/{$configDir} tidak tersedia.", 1);
+            throw new InvalidArgumentException("Directory {$basePath}/{$configDir} tidak tersedia.");
         }
 
         $bridge = new self($basePath);
