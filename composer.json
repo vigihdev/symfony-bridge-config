@@ -11,8 +11,7 @@
         "dotenv",
         "di",
         "dependency-injection",
-        "bridge",
-        "php"
+        "bridge"
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
