@@ -1,6 +1,6 @@
 {
     "name": "vigihdev/symfony-bridge-config",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "description": "Vigih Dev A bridge library that unifies Symfony Config, Yaml, Dotenv, and DependencyInjection components for easier project configuration.",
     "type": "library",
     "license": "MIT",
