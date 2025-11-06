@@ -13,14 +13,15 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Filesystem\Path;
+use VigihDev\SymfonyBridge\Config\AttributeInjection\DependencyInjector;
 use VigihDev\SymfonyBridge\Config\Service\ServiceLocator;
 
 final class ConfigBridge implements ConfigBridgeContract
 {
     private ContainerBuilder $container;
+    private static bool $injectionEnabled = false;
 
-
-    public static function boot(string $basePath, string $configDir = 'config'): static
+    public static function boot(string $basePath, string $configDir = 'config', bool $enableAutoInjection = true): static
     {
 
         if (!is_dir($basePath) || !is_dir(Path::join($basePath, $configDir))) {
@@ -31,6 +32,13 @@ final class ConfigBridge implements ConfigBridgeContract
         $bridge->loadEnv();
         $bridge->loadConfig("{$basePath}/{$configDir}");
         $bridge->compile();
+
+        // Enable dependency injection setelah container ready
+        if ($enableAutoInjection) {
+            self::$injectionEnabled = true;
+            DependencyInjector::setContainer($bridge->container);
+        }
+
         return $bridge;
     }
 
@@ -90,5 +98,27 @@ final class ConfigBridge implements ConfigBridgeContract
     public function container(): ContainerBuilder
     {
         return $this->container;
+    }
+
+    /**
+     * Create service with auto dependency injection
+     */
+    public static function make(string $className): object
+    {
+        if (!self::$injectionEnabled) {
+            throw new \RuntimeException('Auto injection belum di-enable. Panggil ConfigBridge::boot() terlebih dahulu.');
+        }
+
+        $instance = new $className();
+        DependencyInjector::inject($instance);
+        return $instance;
+    }
+
+    /**
+     * Check if auto injection is enabled
+     */
+    public static function isInjectionEnabled(): bool
+    {
+        return self::$injectionEnabled;
     }
 }

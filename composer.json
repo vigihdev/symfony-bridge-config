@@ -5,9 +5,14 @@
     "type": "library",
     "license": "MIT",
     "keywords": [
-        "Symfony",
-        "Config",
-        "vigihdev"
+        "symfony",
+        "config",
+        "yaml",
+        "dotenv",
+        "di",
+        "dependency-injection",
+        "bridge",
+        "php"
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
