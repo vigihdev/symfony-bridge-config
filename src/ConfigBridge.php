@@ -34,6 +34,7 @@ final class ConfigBridge implements ConfigBridgeContract
 
         $bridge = new self($basePath);
         $bridge->loadEnv();
+
         // loadEnvPaths
         if (!empty($loadEnvPaths)) {
             foreach ($loadEnvPaths as $envPath) {
@@ -46,7 +47,6 @@ final class ConfigBridge implements ConfigBridgeContract
 
         $bridge->loadConfig("{$basePath}/{$configDir}");
         $bridge->compile();
-
 
         // Enable dependency injection setelah container ready
         if ($enableAutoInjection) {
