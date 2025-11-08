@@ -21,8 +21,12 @@ final class ConfigBridge implements ConfigBridgeContract
     private ContainerBuilder $container;
     private static bool $injectionEnabled = false;
 
-    public static function boot(string $basePath, string $configDir = 'config', bool $enableAutoInjection = true): static
-    {
+    public static function boot(
+        string $basePath,
+        string $configDir = 'config',
+        bool $enableAutoInjection = true,
+        array $loadEnvPaths = []
+    ): static {
 
         if (!is_dir($basePath) || !is_dir(Path::join($basePath, $configDir))) {
             throw new InvalidArgumentException("Directory {$basePath}/{$configDir} tidak tersedia.");
@@ -30,8 +34,19 @@ final class ConfigBridge implements ConfigBridgeContract
 
         $bridge = new self($basePath);
         $bridge->loadEnv();
+        // loadEnvPaths
+        if (!empty($loadEnvPaths)) {
+            foreach ($loadEnvPaths as $envPath) {
+                if (!is_file($envPath)) {
+                    throw new InvalidArgumentException("File {$envPath} tidak tersedia.");
+                }
+                $bridge->loadEnv($envPath);
+            }
+        }
+
         $bridge->loadConfig("{$basePath}/{$configDir}");
         $bridge->compile();
+
 
         // Enable dependency injection setelah container ready
         if ($enableAutoInjection) {
